@@ -5,7 +5,7 @@ class BankAccount{
   int balance;
   int previous_transaction;
   const string IFSC="HNS09234";
-  string token="greeshma";
+  string token="Greeshma";
   const string acc="98765";
   void deposit(int amount){
       if(amount>=0){
@@ -144,7 +144,7 @@ class BankAccount{
            }
             
           default:
-              cout<<"*******************"<<endl;
+              cout<<"*"<<endl;
             break;
       }
       }while(opt!='D');
@@ -220,8 +220,192 @@ class BankAccount{
                 }while(1);
                 
   }
+  void get_previous_transaction(){
+      if(previous_transaction>0){
+          cout<<"Deposited: "<<previous_transaction<<endl;;
+      }
+      else if(previous_transaction<0){
+          cout<<"Withdrawn: "<<previous_transaction<<endl;;
+      }
+      else{
+          cout<<"No Transaction Occured";
+      }
+  }
+  void show_menu(){
+      char option='\0';
+      cout<<"Welcome "<<customerName<<endl;
+      cout<<"Your AccountNumber: "<<acc+customerId<<endl;
+      cout<<"A. Create Account"<<endl;
+      cout<<"B. Show Details"<<endl;
+      cout<<"C. Check Balance"<<endl;
+      cout<<"D. Deposit"<<endl;
+      cout<<"E. Withdraw"<<endl;
+      cout<<"F. Previous Transaction"<<endl;
+      cout<<"G. Update Details"<<endl;
+      cout<<"H. Exit"<<endl;
+      do{
+          cout<<"Enter an Option*"<<endl;
+          cin>>option;
+          switch(option){
+              case 'A':
+                create_new_account();
+                break;
+              case 'B':
+                cout<<"Name:"<<customerName<<endl;
+                cout<<"AccountNumber:"<<acc+customerId<<endl;
+                cout<<"Date-of-Birth:"<<DoB<<endl;
+                cout<<"AadharNumber:"<<aadhar<<endl;
+                cout<<"Balance:"<<balance<<endl;
+                break;
+              case 'C': 
+                cout<<"Balance =+"<<balance<<endl;
+                break;
+              case 'D':
+                cout<<"Enter amount to be deposited"<<endl;
+                int amount1;cin>>amount1;
+                deposit(amount1);
+                
+                break;
+              case 'E':
+                cout<<"Enter amount to withdraw:"<<endl;
+                int amount2;cin>>amount2;
+                withdraw(amount2);
+                break;
+              case 'F':
+                get_previous_transaction();
+                break;
+              case 'G':
+                update_details();
+                break;
+              case 'H':
+                 cout<<"*"<<endl;
+                 break;
+              default:
+                cout<<"Invalid Option"<<endl;
+                break;
+          }
+      }while(option!='H');
+      cout<<"THANK YOU for using Our Service"<<endl;
+  }
 };
-
+class Manager: public BankAccount{
+    void update_customerName(){
+        string Name;
+        cout<<"please enter customerName"<<endl;
+        cin>>Name;
+        customerName=Name;
+    }
+    void update_DoB(){
+        cout<<"Enter your DoB(dd-mm-yy)"<<endl;
+                do{
+                    string Date;
+                    cin>>Date;
+                    if(!valid_date(Date)){
+                        cout<<"Please enter valid Date-of-Birth(dd-mm-yy)"<<endl;
+                    }
+                    else{
+                        DoB=Date;
+                        break;
+                    }
+                }while(1);
+        return;
+    }
+    void update_aadhar(){
+        cout<<"Enter AadharNumber"<<endl;
+        do{
+            string adhar;
+                    cin>>adhar;
+                    if(adhar.length()!=12){
+                       cout<<"plese enter valid AadharNumber"<<endl;
+                    }
+                    else{
+                       aadhar=adhar;
+                       break;
+                    } 
+        }while(1);
+        return;              
+    }
+    void update_pan(){
+        cout<<"Enter pan number"<<endl;
+        do{
+            string adhar;
+                    cin>>adhar;
+                    if(adhar.length()!=10){
+                       cout<<"plese enter valid PAN Number"<<endl;
+                    }
+                    else{
+                       pan=adhar;
+                       break;
+                    }  
+        }while(1);
+                      
+    }
+    public:
+    void change(){
+        char option='\0';
+        do{ cout<<"please enter option"<<endl;
+            cout<<"A. update customerName"<<endl;
+            cout<<"B. update date of birth"<<endl;
+            cout<<"C. update AadharNumber"<<endl;
+            cout<<"D. update PAN number"<<endl;
+            cout<<"E. Exit"<<endl;
+            
+            cin>>option;
+            switch(option){
+            case 'A':
+               update_customerName();
+               break;
+            case 'B':
+               update_DoB();
+               break;
+            case 'C':
+               update_aadhar();
+               break;
+            case 'D':
+               update_pan();
+               break;
+            case 'E':
+               cout<<""<<endl;
+               break;
+            default:
+               cout<<"invalid option"<<endl;
+               break;
+            }
+        }while(option!='E');
+    }
+};
+class Customer :public Manager{
+    public:
+    void details(){
+        std::cout<<"please enter Name:"<<endl;
+        cin>>customerName;
+        cout<<"please enter AccountNumber:"<<endl;
+        string accno;
+       do{
+           cin>>accno;
+       if(accno.substr(0,5)!="98765"){
+           cout<<"Please enter valid Account Number"<<endl;
+       }
+       else{
+           customerId=accno.substr(5,5);
+           break;
+       }
+       }while(1);
+       cout<<"Enter Password"<<endl;
+       string password;
+       do{
+           cin>>password;
+       if(get_token()!=password){
+           cout<<"please enter valid password"<<endl;
+       }
+       else{
+           break;
+       }
+       }while(1);
+      
+    }
+    
+};
 int main() {
     Customer person;
     cout<<"A.Sign up"<<endl;
@@ -235,14 +419,14 @@ int main() {
         person.show_menu();
         break;
         }
-        else if(c=='B'){
-        person.details(); 
-        person.show_menu();
-        break;
-        }
-        else{
-        cout<<"Please enter valid option"<<endl;
-        }
+	    else if(c=='B'){
+	    person.details(); 
+	    person.show_menu();
+	    break;
+	    }
+	    else{
+	    cout<<"Please enter valid option"<<endl;
+	    }
     }while(1);
     Manager m;
     m.change();
